@@ -154,6 +154,7 @@ $target = New-Object Amazon.CloudWatchEvents.Model.Target
 $target.Arn = $lambda.FunctionArn
 $target.Id = $lambda.RevisionId
 Write-CWETarget -Rule $rule.Substring($rule.IndexOf("/")+1) -Target $target
+Add-LMPermission -FunctionName $lambda.FunctionName -Action "lambda:InvokeFunction" -Principal "events.amazonaws.com" -StatementId $rule.Substring($rule.IndexOf("/")+1) -SourceArn $rule
 
 <# Example Roles
 $policy = @"
