@@ -80,7 +80,7 @@ foreach(`$object in `$objects)
     # We first identify if the entity is an AWS account number, essentially 12 digits
     if(`$entity -match "^[0-9]{12}$")
     {
-        `$policy = @'
+        `$policy = @`"
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -94,14 +94,14 @@ foreach(`$object in `$objects)
         }
     ]
 }
-'@
+`"@
         # Create the new role
         `$role = New-IAMRole -RoleName "`$roleName" -AssumeRolePolicyDocument `$policy
     }
     # We assume if it isn't an account number, then it is intended to be an AWS service name
     else
     {
-        `$policy = @'
+        `$policy = @`"
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -115,7 +115,7 @@ foreach(`$object in `$objects)
         }
     ]
 }
-'@
+`"@
         `$role = New-IAMRole -RoleName "`$roleName" -AssumeRolePolicyDocument `$policy
     }
     # Next we need to idnetify AWS or customer managed policies to attach to the role
@@ -140,7 +140,7 @@ foreach(`$object in `$objects)
         `$file = Invoke-WebRequest (Get-S3PreSignedURL -BucketName $($bucket.BucketName) -Expire (Get-Date).AddMinutes(1) -Protocol HTTP -Key "`$entity/`$roleName/`$policyName.json")
         `$json = [System.Text.Encoding]::ASCII.GetString(`$file.content)
         # Create the new IAM Policy and attach to the Role
-        Write-IAMRolePolicy -RoleName "`$roleName" -PolicyDocument `$json -PolicyName "`$policyName"
+        Write-IAMRolePolicy -RoleName "`$roleName" -PolicyDocument `$json -PolicyName `$policyName
     }
 }
 "@
