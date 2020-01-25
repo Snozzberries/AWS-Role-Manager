@@ -181,5 +181,5 @@ $policy = @"
     ]
 }
 "@
-Write-S3Object -BucketName $bucket.BucketName -Key "$((Get-STSCallerIdentity).Account)/ROLE-Name/inline/POLICY-FullAdmin.json" -Content $policy
+Write-S3Object -BucketName $bucket.BucketName -Key "$((Get-STSCallerIdentity).Account)/ROLE-Name/POLICY-FullAdmin.json" -Content $policy
 #>
