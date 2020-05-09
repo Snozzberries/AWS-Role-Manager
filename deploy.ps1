@@ -33,6 +33,7 @@ $policy = @"
 "@
 Write-IAMRolePolicy -RoleName "ROLE-RoleManager" -PolicyDocument $policy -PolicyName "POLICY-ROLE-RoleManager"
 Register-IAMRolePolicy -RoleName "ROLE-RoleManager" -PolicyArn "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+Register-IAMRolePolicy -RoleName "ROLE-RoleManager" -PolicyArn "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
 
 $policy = @"
 {
