@@ -63,7 +63,8 @@ foreach($object in $objects)
         # First download the policy object
         $file = Invoke-WebRequest (Get-S3PreSignedURL -BucketName $bucket -Expire (Get-Date).AddMinutes(1) -Protocol HTTP -Key "$entity/$roleName/$policyName.json")
         # Next get the content from the downloaded object
-        $json = [System.Text.Encoding]::ASCII.GetString($file.content)
+        # $json = [System.Text.Encoding]::ASCII.GetString($file.content)
+        $json = $file.content
         # Then convert it to a JSON object
         $jsonObject = ConvertFrom-Json $json
         foreach($arn in $jsonObject.arn)
@@ -76,7 +77,8 @@ foreach($object in $objects)
     else
     {
         $file = Invoke-WebRequest (Get-S3PreSignedURL -BucketName $bucket -Expire (Get-Date).AddMinutes(1) -Protocol HTTP -Key "$entity/$roleName/$policyName.json")
-        $json = [System.Text.Encoding]::ASCII.GetString($file.content)
+        #$json = [System.Text.Encoding]::ASCII.GetString($file.content)
+        $json = $file.content
         # Create the new IAM Policy and attach to the Role
         Write-IAMRolePolicy -RoleName "$roleName" -PolicyDocument $json -PolicyName "$policyName"
     }
